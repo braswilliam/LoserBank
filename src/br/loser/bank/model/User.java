@@ -1,20 +1,22 @@
 package br.loser.bank.model;
 
-import java.util.Date;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import br.loser.bank.exceptions.ErroNoCNPJException;
 import br.loser.bank.exceptions.ErroNoCPFException;
 import br.loser.bank.exceptions.ErroNoRGException;
 
 public class User {
-
+    //atributos
     private String name;
     private String numeroDoDocumento;
     private String rg;
-    private Date dataNascimento;
+    private String dataNascimento;
     private TypeUser typeUser;
 
-    // contructor:
+    // construtores:
     public User() {
     }
     
@@ -51,9 +53,15 @@ public class User {
         this.numeroDoDocumento = pessoaJuridica;
     }
 
+    public int getIdade() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dataNascimento = LocalDate.parse(this.dataNascimento,formatter);
+        LocalDate hoje = LocalDate.now();
+        Period periodo = Period.between(dataNascimento,hoje);
+        return periodo.getYears();
+    }
 
-    //funções getters and seters:
-
+    //funções getters and setters:
     public String getName() {
         return name;
     }
@@ -66,8 +74,12 @@ public class User {
         return rg;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
+    }
+
+    public void setDataNascimento(String dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public String getTypeUser() {
